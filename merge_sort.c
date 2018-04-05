@@ -7,7 +7,6 @@
 int temp[MAX_DATA];    /* 最小でも配列と同じサイズの領域が必要 */
 
 void MergeSort(int x[ ], int left, int right);
-void main(void);
 
   /* 配列 x[ ] の left から right の要素のマージソートを行う */
 void MergeSort(int x[ ], int left, int right)
@@ -40,7 +39,7 @@ void MergeSort(int x[ ], int left, int right)
             x[k] = temp[j--];
 }
 
-void main(void)
+int main(void)
 {
     int i;
       /* ソートされるデータ */
@@ -49,12 +48,13 @@ void main(void)
       /* ソート前のデータを表示 */
     printf("ソート前\n");
     for (i = 0; i < MAX_DATA; i++)
-        printf("%d\t", x[i]);
-
+        printf("%3d", x[i]);
+    printf("\n");
     MergeSort(x, 0, MAX_DATA - 1);
 
       /* ソート後のデータを表示 */
     printf("ソート後\n");
     for (i = 0; i < MAX_DATA; i++)
-        printf("%d\t", x[i]);
+        printf("%3d", x[i]);
+    return 0;
 }
