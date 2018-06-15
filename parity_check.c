@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<stlib.h>
+#include<stdlib.h>
 #include<string.h>
 
 /*パリティチェック(熊大院試問題)*/
@@ -10,7 +10,7 @@ int BitCount(unsigned char data){               //1の数をカウントする
 
     while(mask!=0){                             //すべてのビットまで
         if(mask&data)num++;
-        /*   (イ)   */
+        /*   (イ)   */                           //次のビットへ
     }
     return num;
 }
@@ -18,16 +18,16 @@ int BitCount(unsigned char data){               //1の数をカウントする
 unsigned char AddParityBit(unsigned char data,int flag){        //送信時のパリティ付加
 /* flag=0 偶数パリティビット;   flag=1 奇数パリティビットを末尾に付加*/
 
-    int count=0
+    int count=0;
     unsigned char retVal;
     count=BitCount(data);
 
     if(/*   (ウ)   */){
-        retVal=data*2;
-    }else{
+    retVal=data*2;
+}else{
         retVal=/*   (エ)   */;
-    }
-    return retVal;
+}
+return retVal;
 }
 
 
@@ -36,6 +36,18 @@ int ParityCheck(unsigned char data,int flag){       //受信時のパリティ�
 
     int count=0;
     count=BitCount(data);
-    if(/*   (オ)   */)return 0;                      //パリティエラーなし
-    else return -1;                                  //パリティエラーあり
+    if(/*   (オ)   */){
+        printf("パリティエラーなし\n");  return 0;
+    }else return -1;                                  //パリティエラーあり
 }
+
+
+int main(int argc, char const *argv[])
+{
+    unsigned char binary[]="11010"
+
+    AddParityBit(binary,0);
+    ParityCheck(binary,0);
+  return 0;
+}
+
