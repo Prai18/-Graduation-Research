@@ -42,12 +42,12 @@ int ParityCheck(unsigned char data,int flag){       //受信時のパリティ�
 }
 
 
-int main(int argc, char const *argv[])
-{
-    unsigned char binary[]="11010"
+// int main(int argc, char const *argv[])           //問題ではmain関数は書かれてないから自分で作ってうごかしてみて
+// {                                                //こんな感じで動くと思ったけど...
+//     unsigned char binary[]="11010"
 
-    AddParityBit(binary,0);
-    ParityCheck(binary,0);
-  return 0;
-}
+//     AddParityBit(binary,0);
+//     ParityCheck(binary,0);
+//   return 0;
+// }
 
