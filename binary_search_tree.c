@@ -11,7 +11,7 @@ typedef struct node{
     struct node *right;
 }Node;
 
-Node *create(int key){
+Node *create_node(int key){
     Node *x;
     x=malloc(sizeof(Node));
     x->key=key;
@@ -22,25 +22,26 @@ Node *create(int key){
 
 Node *tree_search(Node *x,int k){
     if(x==NULL)return NULL;
-    if(/* (ア) */)return x;
-    if(/* (イ) */){
+    if(x->key==k)return x;                                               //(ア)
+    if(x->key<k){                                                        //(イ)
     return tree_search(x->left,k);
 }else{
     return tree_search(x->right,k);
+}
 }
 
 void tree_insert(Node *x,int key){
     if(x->key<=key){
         if(x->right==NULL){
-            x->right=create_node(key);
+            x->right=create_node(key);  
         }else{
-            tree_insert(/* (ウ) */,key);
+            tree_insert(x->right,key);                                   //(ウ)
         }
     }else{
         if(x->left==NULL){
-            x->left=create_node(key);
+            x->left=create_node(key);                                    //(エ)
         }else{
-            tree_insert(/* (エ) */,key);
+            tree_insert(x->left,key);
         }
     }
 }
