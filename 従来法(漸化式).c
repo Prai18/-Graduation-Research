@@ -1,16 +1,17 @@
 #include<stdio.h>
 #include<stdlib.h>
 #define M 3
-#define N 16
-#define K 16
+#define N 64				//flagの大きさ
+#define K 64				//mod Kの値
 int Tm_x(int m);
 int Tm_y(int m);
 int pow_o(int k);
 void surplus_x(int huga);
 void surplus_y(int hoge);
+void flag_s();
 
-int x=5;                 
-int y=14;
+int x=13;                 
+int y=15;
 int xx;                   //Tm(x,y)のxの値が入る
 int yy;                   //Tm(x,y)のyの値が入る
 int m;                    //m次多項式
@@ -28,31 +29,18 @@ int count=0;
 
 int main(int argc, char const *argv[]){
 
-FILE* fp;
-  if((fp=fopen("数値解析.csv","w"))==NULL){
-        printf("ファイルをオープンできません。\n");
-    }
+// FILE* fp;
+//   if((fp=fopen("数値解析.csv","w"))==NULL){
+//         printf("ファイルをオープンできません。\n");
+//     }
 
 	prevx=x;
 	prevy=y;
 
 	piyo=K;
-
-	for (int i = 0; i < N; ++i)						
-	{
-		for (int j = 0; j < N; ++j)
-		{
-			for (int k = 0; k < N; ++k)
-			{
-				for (int l = 0; l < N; ++l)
-				{
-          			flag[i][j][k][l]=0;				//flagの初期化
-          			// printf("flag[%d][%d][%d][%d]=%d\n",i,j,k,l,flag[i][j][k][l]);
-      			}
-  			}
-		}
-}	
-
+	
+	flag_s();							//flagの初期化
+	
 // for (int i = 0; i < N; ++i)
 // {
 // 	for (int j = 0; j < N; ++j)
@@ -85,9 +73,29 @@ while(1){
 	prevx=nextx;
 	prevy=nexty;
 }
+
+// fclose(fp);
 return 0;
 }
 
+
+
+void flag_s(){
+		for (int i = 0; i < N; ++i)						
+	{
+		for (int j = 0; j < N; ++j)
+		{
+			for (int k = 0; k < N; ++k)
+			{
+				for (int l = 0; l < N; ++l)
+				{
+          			flag[i][j][k][l]=0;				//flagの初期化
+          			// printf("flag[%d][%d][%d][%d]=%d\n",i,j,k,l,flag[i][j][k][l]);
+      			}
+  			}
+		}
+}
+}
 
 
 void surplus_x(int huga){
