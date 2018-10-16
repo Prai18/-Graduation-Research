@@ -1,6 +1,7 @@
 #include<stdio.h>
-#include<time.h>
+#include<stdlib.h>
 #define M 3
+#define N 8
 
 int Tm_x(int m);
 int Tm_y(int m);
@@ -8,7 +9,7 @@ int pow_o(int k);
 void surplus_x(int huga);
 void surplus_y(int hoge);
 
-int x=0;                 
+int x=10;                 
 int y=5;
 int xx;                   //Tm(x,y)のxの値が入る
 int yy;                   //Tm(x,y)のyの値が入る
@@ -18,22 +19,39 @@ int i=0;
 int piyo;
 int remnant;                //余り
 
-clock_t start,end;              //計測用変数
+int x1,x2;
+int y1,y2;
+
+int flag[N][N][N][N];
+
+
 
 
 int main(int argc, char const *argv[])
 {
 	piyo=pow_o(k);
 
+	for (int i = 0; i < N; ++i)
+  {
+    for (int j = 0; j < N; ++j)
+    {
+      for (int k = 0; k < N; ++k)
+      {
+        for (int l = 0; l < N; ++l)
+        {
+          flag[i][j][k][l]=0;
+          printf("flag[%d][%d][%d][%d]=%d\n",i,j,k,l,flag[i][j][k][l]);
+        }
+      }
+    }
+  }
+
 while(i!=10){
 
 
-	
 	for (m = 1; m <= M; ++m){          //1,2,3,・・・,mとTm(x,y)のmを変化させていく
 
-  	// start=clock();					//###########ここから###################
   	xx=Tm_x(m);
-  	// end=clock();					//###########ここまで計測################
   	yy=Tm_y(m);
   	
   	if(m==M){
@@ -44,7 +62,6 @@ while(i!=10){
   		printf("yのmod演算\n");
   		surplus_y(yy);
   		printf("/////////////////////////\n");
-
   	}
 
   }
