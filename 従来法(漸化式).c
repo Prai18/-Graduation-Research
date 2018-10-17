@@ -1,17 +1,17 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define M 3
+#define M 3					//m次多項式のm
 #define N 64				//flagの大きさ
-#define K 64				//mod Kの値
-int Tm_x(int m);
-int Tm_y(int m);
-int pow_o(int k);
-void surplus_x(int huga);
-void surplus_y(int hoge);
-void flag_s();
+#define K 64				//法の値
 
-int x=13;                 
-int y=15;
+int Tm_x(int m);			//m次の2変数可換多項式のxの値
+int Tm_y(int m);			//m次の2変数可換多項式のyの値
+void surplus_x(int huga);	//剰余演算x
+void surplus_y(int hoge);	//剰余演算y
+void flag_s();				//flagの初期化
+
+int x=55;                 
+int y=56;
 int xx;                   //Tm(x,y)のxの値が入る
 int yy;                   //Tm(x,y)のyの値が入る
 int m;                    //m次多項式
@@ -25,7 +25,8 @@ int prevy,nexty;
 int flag[N][N][N][N];
 
 int count=0;
-
+int f=1;
+int l,ll;
 
 int main(int argc, char const *argv[]){
 
@@ -41,15 +42,15 @@ int main(int argc, char const *argv[]){
 	
 	flag_s();							//flagの初期化
 	
-// for (int i = 0; i < N; ++i)
+// for (l = 0; l < N; ++l)
 // {
-// 	for (int j = 0; j < N; ++j)
+// 	for (ll = 0; ll < N; ++ll)
 // 	{
-// 		fprintf(fp,"(%d、%d)\n",i,j);
+// 		fprintf(fp,"(%d、%d)\n",l,ll);
 // 	}
 // }
 
-while(1){
+	while(1){
 
 	for (m = 1; m <= M; ++m){          //1,2,3,・・・,mとTm(x,y)のmを変化させていく
 
@@ -57,6 +58,7 @@ while(1){
 		yy=Tm_y(m);
 
 		if(m==M){
+			printf("#######################\n");
 			printf("\n\n(x,y)=(%d,%d)のとき\n\n",x,y);
 			printf("\nT%d(x,y)\n",m);
 			printf("xのmod演算\n");
@@ -64,7 +66,7 @@ while(1){
 			printf("yのmod演算\n");
 			surplus_y(yy);
 			flag[prevx][prevy][nextx][nexty]+=1;
-			printf("/////////////////////////\n");
+			printf("#######################\n");
 		}
 	}
 	if(flag[prevx][prevy][nextx][nexty]==2){
@@ -74,6 +76,41 @@ while(1){
 	prevy=nexty;
 }
 
+x=prevx;
+y=prevy;
+
+flag_s();							//flagの初期化
+
+f=0;
+
+while(1){
+
+	for (m = 1; m <= M; ++m){          //1,2,3,・・・,mとTm(x,y)のmを変化させていく
+
+		xx=Tm_x(m);
+		yy=Tm_y(m);
+
+		if(m==M){
+			// printf("\n\n(x,y)=(%d,%d)のとき\n\n",x,y);
+			// printf("\nT%d(x,y)\n",m);
+			// printf("xのmod演算\n");
+			surplus_x(xx);
+			// printf("yのmod演算\n");
+			surplus_y(yy);
+			count++;
+			flag[prevx][prevy][nextx][nexty]+=1;
+			// printf("/////////////////////////\n");
+		}
+	}
+	if(flag[prevx][prevy][nextx][nexty]==2){
+		printf("\n周期→%d\n\n",count-1);
+		break;
+	}
+	prevx=nextx;
+	prevy=nexty;
+}
+fprintf(fp, "%d\n", count);
+
 // fclose(fp);
 return 0;
 }
@@ -81,7 +118,7 @@ return 0;
 
 
 void flag_s(){
-		for (int i = 0; i < N; ++i)						
+	for (int i = 0; i < N; ++i)						
 	{
 		for (int j = 0; j < N; ++j)
 		{
@@ -91,14 +128,15 @@ void flag_s(){
 				{
           			flag[i][j][k][l]=0;				//flagの初期化
           			// printf("flag[%d][%d][%d][%d]=%d\n",i,j,k,l,flag[i][j][k][l]);
-      			}
-  			}
-		}
-}
-}
+          		}
+          	}
+          }
+      }
+  }
 
 
-void surplus_x(int huga){
+
+  void surplus_x(int huga){
 
   remnant=huga%piyo;              //Tm(x,y)%2^k　
     // if(remnant==1){
@@ -107,10 +145,14 @@ void surplus_x(int huga){
   if(remnant<0){                
   	remnant+=piyo;
   }
-  printf("%3d％%d remnant=%d\n",huga,piyo,remnant);
+  if(f==1){
+  	printf("%3d％%d remnant=%d\n",huga,piyo,remnant);
+  }
   x=remnant;
   nextx=remnant;
 }
+
+
 
 void surplus_y(int hoge){
 
@@ -121,21 +163,13 @@ void surplus_y(int hoge){
   if(remnant<0){                
   	remnant+=piyo;
   }
-  printf("%3d％%d remnant=%d\n",hoge,piyo,remnant);
+  if(f==1){
+  	printf("%3d％%d remnant=%d\n",hoge,piyo,remnant);
+  }
   y=remnant;
   nexty=remnant;
 }
 
-
-
-// int pow_o(int k){                 //2^kを求める
-// 	int base=1;
-// 	for (int i = 0; i < k; ++i)
-// 	{
-// 		base*=2;
-// 	}
-// 	return base;
-// }
 
 
 int Tm_x(int m){                  //2変数可換多項式のxの式(再帰関数)
@@ -147,6 +181,8 @@ int Tm_x(int m){                  //2変数可換多項式のxの式(再帰関�
 	}
 	return x*Tm_x(m-1)-y*Tm_x(m-2);
 }
+
+
 
 int Tm_y(int m){                  //2変数可換多項式のyの式(再帰関数)
 	if(m-1==1){
