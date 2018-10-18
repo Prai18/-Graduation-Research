@@ -1,8 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
 #define M 3					//m次多項式のm
-#define N 64				//flagの大きさ
-#define K 64				//法の値
+#define N 128				//flagの大きさ
+#define K 128				//法の値
 
 int Tm_x(int m);			//m次の2変数可換多項式のxの値
 int Tm_y(int m);			//m次の2変数可換多項式のyの値
@@ -10,8 +10,8 @@ void surplus_x(int huga);	//剰余演算x
 void surplus_y(int hoge);	//剰余演算y
 void flag_s();				//flagの初期化
 
-int x=55;                 
-int y=56;
+int x=0;                 
+int y=0;
 int xx;                   //Tm(x,y)のxの値が入る
 int yy;                   //Tm(x,y)のyの値が入る
 int m;                    //m次多項式
@@ -22,7 +22,7 @@ int remnant;                //余り
 int prevx,nextx;			//flag[prevx][prevy][nextx][nexty]
 int prevy,nexty;
 
-int flag[N][N][N][N];
+int flag[N][N][N][N];		//ループ判定用のフラグ
 
 int count=0;
 int f=1;
@@ -30,89 +30,94 @@ int l,ll;
 
 int main(int argc, char const *argv[]){
 
-// FILE* fp;
-//   if((fp=fopen("数値解析.csv","w"))==NULL){
-//         printf("ファイルをオープンできません。\n");
-//     }
-
-	prevx=x;
-	prevy=y;
-
-	piyo=K;
-	
-	flag_s();							//flagの初期化
-	
-// for (l = 0; l < N; ++l)
-// {
-// 	for (ll = 0; ll < N; ++ll)
-// 	{
-// 		fprintf(fp,"(%d、%d)\n",l,ll);
-// 	}
-// }
-
-	while(1){
-
-	for (m = 1; m <= M; ++m){          //1,2,3,・・・,mとTm(x,y)のmを変化させていく
-
-		xx=Tm_x(m);
-		yy=Tm_y(m);
-
-		if(m==M){
-			printf("#######################\n");
-			printf("\n\n(x,y)=(%d,%d)のとき\n\n",x,y);
-			printf("\nT%d(x,y)\n",m);
-			printf("xのmod演算\n");
-			surplus_x(xx);
-			printf("yのmod演算\n");
-			surplus_y(yy);
-			flag[prevx][prevy][nextx][nexty]+=1;
-			printf("#######################\n");
-		}
+	FILE* fp;
+	if((fp=fopen("mod128.csv","w"))==NULL){
+		printf("ファイルをオープンできません。\n");
 	}
-	if(flag[prevx][prevy][nextx][nexty]==2){
-		break;
-	}
-	prevx=nextx;
-	prevy=nexty;
-}
 
-x=prevx;
-y=prevy;
+	for (l = 84; l < N; ++l)
+	{
+		for (ll = 0; ll < N; ++ll)
+		{
 
-flag_s();							//flagの初期化
+			fprintf(fp,"(%d、%d)",l,ll);
+			x=l;
+			y=ll;
 
-f=0;
+			prevx=x;
+			prevy=y;
 
-while(1){
+			piyo=K;
 
-	for (m = 1; m <= M; ++m){          //1,2,3,・・・,mとTm(x,y)のmを変化させていく
+			flag_s();							//flagの初期化
 
-		xx=Tm_x(m);
-		yy=Tm_y(m);
 
-		if(m==M){
+			while(1){
+
+				for (m = 1; m <= M; ++m){          //1,2,3,・・・,mとTm(x,y)のmを変化させていく
+
+					xx=Tm_x(m);
+					yy=Tm_y(m);
+
+					if(m==M){
+			// printf("#######################\n");
 			// printf("\n\n(x,y)=(%d,%d)のとき\n\n",x,y);
 			// printf("\nT%d(x,y)\n",m);
 			// printf("xのmod演算\n");
-			surplus_x(xx);
+						surplus_x(xx);
 			// printf("yのmod演算\n");
-			surplus_y(yy);
-			count++;
-			flag[prevx][prevy][nextx][nexty]+=1;
+						surplus_y(yy);
+						flag[prevx][prevy][nextx][nexty]+=1;
+			// printf("#######################\n");
+					}
+				}
+				if(flag[prevx][prevy][nextx][nexty]==2){
+					break;
+				}
+				prevx=nextx;
+				prevy=nexty;
+			}
+
+			x=prevx;
+			y=prevy;
+
+			flag_s();							//flagの初期化
+
+			f=0;
+
+			while(1){
+
+				for (m = 1; m <= M; ++m){          //1,2,3,・・・,mとTm(x,y)のmを変化させていく
+
+					xx=Tm_x(m);
+					yy=Tm_y(m);
+
+					if(m==M){
+			// printf("\n\n(x,y)=(%d,%d)のとき\n\n",x,y);
+			// printf("\nT%d(x,y)\n",m);
+			// printf("xのmod演算\n");
+						surplus_x(xx);
+			// printf("yのmod演算\n");
+						surplus_y(yy);
+						count++;
+						flag[prevx][prevy][nextx][nexty]+=1;
 			// printf("/////////////////////////\n");
+					}
+				}
+				if(flag[prevx][prevy][nextx][nexty]==2){
+		// printf("\n周期→%d\n\n",count-1);
+					fprintf(fp, ",%d\n", count-1);
+					count=0;
+					break;
+				}
+				prevx=nextx;
+				prevy=nexty;
+			}
+
 		}
 	}
-	if(flag[prevx][prevy][nextx][nexty]==2){
-		printf("\n周期→%d\n\n",count-1);
-		break;
-	}
-	prevx=nextx;
-	prevy=nexty;
-}
-fprintf(fp, "%d\n", count);
-
-// fclose(fp);
-return 0;
+	fclose(fp);
+	return 0;
 }
 
 
@@ -146,7 +151,7 @@ void flag_s(){
   	remnant+=piyo;
   }
   if(f==1){
-  	printf("%3d％%d remnant=%d\n",huga,piyo,remnant);
+  	// printf("%3d％%d remnant=%d\n",huga,piyo,remnant);
   }
   x=remnant;
   nextx=remnant;
@@ -164,7 +169,7 @@ void surplus_y(int hoge){
   	remnant+=piyo;
   }
   if(f==1){
-  	printf("%3d％%d remnant=%d\n",hoge,piyo,remnant);
+  	// printf("%3d％%d remnant=%d\n",hoge,piyo,remnant);
   }
   y=remnant;
   nexty=remnant;
