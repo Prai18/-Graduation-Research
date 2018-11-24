@@ -2,7 +2,6 @@
 #include<stdlib.h>
 #define M 3                //m次多項式のm
 #define N 64               //flagの大きさ
-#define K 64               //法の値
 
 int Tm_x(int m);            //m次の2変数可換多項式のxの値
 int Tm_y(int m);            //m次の2変数可換多項式のyの値
@@ -18,7 +17,7 @@ int xx;                   //Tm(x,y)のxの値が入る
 int yy;                   //Tm(x,y)のyの値が入る
 int m;                    //m次多項式
 int i=0;
-int piyo;
+int piyo=N;
 int remnant;                //余り
 
 int prevx,nextx;            //flag[prevx][prevy][nextx][nexty]
@@ -48,9 +47,8 @@ int main(){
             prevx=x;
             prevy=y;
 
-            piyo=K;
 
-           // flag_s();                           //flagの初期化
+            flag_s();                           //flagの初期化
 
 
             while(1){
@@ -106,7 +104,7 @@ int main(){
                     }
                 }
                 if(flag[prevx][prevy][nextx][nexty]==2){
-              //      printf("%d\n",count-1);
+                    printf("%d\n",count-1);
                     cou=count-1;
                     if(cou==1){
                         count1++;
@@ -204,9 +202,9 @@ void surplus_x(int huga){
   if(remnant<0){                
     remnant+=piyo;
 }
-if(f==1){
-    // printf("%3d％%d remnant=%d\n",huga,piyo,remnant);
-}
+// if(f==1){
+//     // printf("%3d％%d remnant=%d\n",huga,piyo,remnant);
+// }
 x=remnant;
 nextx=remnant;
 }
@@ -222,9 +220,9 @@ void surplus_y(int hoge){
   if(remnant<0){                
     remnant+=piyo;
 }
-if(f==1){
-    // printf("%3d％%d remnant=%d\n",hoge,piyo,remnant);
-}
+// if(f==1){
+//     // printf("%3d％%d remnant=%d\n",hoge,piyo,remnant);
+// }
 y=remnant;
 nexty=remnant;
 }
